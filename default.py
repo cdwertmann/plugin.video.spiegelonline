@@ -1,26 +1,29 @@
+# -*- coding: utf-8 -*-
 # Copyright 2010 by peterpanzki
-import urllib,urllib2,re,time,xbmcplugin,xbmcgui
+import urllib,urllib2,re,time,xbmcplugin,xbmcgui,xbmcaddon
 
 # plugin handle
 SITE = "http://www1.spiegel.de/active/playlist/fcgi/playlist.fcgi/asset=flashvideo/mode=list/displaycategory="
 VIDS = 20
 VIDS_PER_SITE = "/count=" + str(VIDS) + "/" 
 handle = int(sys.argv[1])
+__addon__        = xbmcaddon.Addon()
+__language__     = __addon__.getLocalizedString
 
 def show_root_menu():
-    addDirectoryItem("News", {"cat": "newsmitfragmenten", "site": 1})  
-    addDirectoryItem("Politik & Wirtschaft", {"cat": "politikundwirtschaft", "site": 1})
-    addDirectoryItem("Panorama", {"cat": "panorama2", "site": 1})
-    addDirectoryItem("Kino", {"cat": "kino", "site": 1})
-    addDirectoryItem("Kultur", {"cat": "kultur", "site": 1})
-    addDirectoryItem("Sport", {"cat": "sport2", "site": 1})
-    addDirectoryItem("Wissen & Technik", {"cat": "wissenundtechnik", "site": 1})
-    addDirectoryItem("Serien & Blogs", {"cat": "blogs", "site": 1})
-    addDirectoryItem("Spiegel TV Magazin", {"cat": "spiegel%20tv%20magazin", "site": 1})      
+    addDirectoryItem(__addon__.getLocalizedString(30003), {"cat": "newsmitfragmenten", "site": 1})  
+    addDirectoryItem(__addon__.getLocalizedString(30004), {"cat": "politikundwirtschaft", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30005), {"cat": "panorama2", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30006), {"cat": "kino", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30007), {"cat": "kultur", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30008), {"cat": "sport2", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30009), {"cat": "wissenundtechnik", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30010), {"cat": "blogs", "site": 1})
+    addDirectoryItem(__addon__.getLocalizedString(30011), {"cat": "spiegel%20tv%20magazin", "site": 1})      
     xbmcplugin.endOfDirectory(handle=handle, succeeded=True)
 
 def show_cat_menu(cat, vnr):
-    content = getUrl(SITE + cat + VIDS_PER_SITE + "start=" + vnr)
+    content = getUrl(SITE + (urllib.unquote_plus(cat)) + VIDS_PER_SITE + "start=" + vnr)
     match = re.compile('<listitem>(.+?)</listitem>',re.DOTALL).findall(content)
     for m in match:
         parts = re.compile('<videoid>(.+?)</videoid><thema>(.+?)</thema><headline>(.+?)</headline><teaser>(.+?)</teaser>.+?<date>(.+?)</date><playtime>(.+?)</playtime><thumb>(.+?)</thumb>',re.DOTALL).findall(m)
@@ -31,8 +34,8 @@ def show_cat_menu(cat, vnr):
     content = getUrl(SITE + cat + VIDS_PER_SITE + "start=" + str(int(vnr) + VIDS))
     match = re.compile('<listitem>(.+?)</listitem>',re.DOTALL).findall(content)
     if len(match) > 0:
-        addDirectoryItem("Nächste Seite", {"cat": cat, "site": str(int(vnr) + VIDS)})
-    addDirectoryItem("Zum Hauptmenü",{"cat": "main"})        
+        addDirectoryItem(__addon__.getLocalizedString(30001), {"cat": cat, "site": str(int(vnr) + VIDS)})
+    addDirectoryItem(__addon__.getLocalizedString(30002),{"cat": "main"})        
     xbmcplugin.endOfDirectory(handle=handle, succeeded=True)
     
 def getVideo(id):
