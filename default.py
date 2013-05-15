@@ -29,9 +29,9 @@ def show_cat_menu(cat, vnr):
     for m in match:
         parts = re.compile('<videoid>(.+?)</videoid><thema>(.+?)</thema><headline>(.+?)</headline><teaser>(.+?)</teaser>.+?<date>(.+?)</date><playtime>(.+?)</playtime><thumb>(.+?)</thumb>',re.DOTALL).findall(m)
         for vid,name,headline,teaser,date,playtime,pic in parts:
-            name.decode('iso-8859-1').encode('utf8')
-            headline.decode('iso-8859-1').encode('utf8')
-            teaser.decode('iso-8859-1').encode('utf8')
+            name=convert_to_UTF8(name)
+            headline=convert_to_UTF8(headline)
+            teaser=convert_to_UTF8(teaser)
             liStyle=xbmcgui.ListItem((name + " - " + headline), iconImage="default.png", thumbnailImage=pic)
             liStyle.setInfo( type="Video", infoLabels={ "Title": name, "plotoutline": headline, "plot": teaser, "date": date})
             liStyle.addStreamInfo('video', {'duration': getSeconds(playtime)})
@@ -94,6 +94,9 @@ def getUrl(url):
     link=response.read()
     response.close()
     return link
+
+def convert_to_UTF8(str):
+    return str.decode('iso-8859-1').encode('utf8')
 
 def getSeconds(playtime):
     t = map(int, re.split(r"[:]", playtime))
