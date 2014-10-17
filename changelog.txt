@@ -1,6 +1,6 @@
 [B]Version 1.2.3[/B]
 
--  	Change to follow recent Spiegel Online video logic changes
+- Change to follow recent Spiegel Online video logic changes
 
 [B]Version 1.2.2[/B]
 
