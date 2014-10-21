@@ -62,7 +62,8 @@ def show_cat_menu(cat, vnr):
     
 def getVideo(id):
     content = None
-    url = BASEURL + id[-1:] + id[-2:-1] + "/" + id[-3:-2] + id[-4:-3] + "/" + id + ".xml"
+    path = id[-1:] + id[-2:-1] + "/" + id[-3:-2] + id[-4:-3] +  "/"
+    url = BASEURL + path + id + ".xml"
     try:
         content = getUrl(url)
     except Exception:
@@ -82,8 +83,8 @@ def getVideo(id):
     #xbmc.log(str(streams), level=xbmc.LOGERROR)
     for file,bitrate in streams:
         # find the best quality stream available
-        if urllib.urlopen(BASEURL + id[-1:] + id[-2:-1] + "/" + id[-3:-2] + id[-4:-3] + "/" + file).getcode()==200:
-            filename = id[-1:] + id[-2:-1] + "/" + id[-3:-2] + id[-4:-3] + "/" + file
+        if urllib.urlopen(BASEURL + path + file).getcode()==200:
+            filename = path + file
             break
     return filename
 
